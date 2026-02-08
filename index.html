@@ -15,7 +15,8 @@
         justify-content: center;
         align-items: center;
         padding: 20px;
-        overflow: hidden; /* Prevents scrollbars during interactions */
+        overflow-x: hidden;
+        cursor: crosshair; /* Hinting at the interaction */
       }
 
       .container {
@@ -31,15 +32,14 @@
         z-index: 10;
       }
 
-      /* Animated Star Icon */
+      /* Animated Compass Star */
       .icon-container {
         position: relative;
         margin: 0 auto 30px;
-        width: 100px;
-        height: 100px;
+        width: 100px; height: 100px;
         background: #fdbb2d;
         clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-        animation: rotateStar 10s infinite linear;
+        animation: rotateStar 15s infinite linear;
       }
 
       @keyframes rotateStar {
@@ -48,87 +48,75 @@
         to { transform: rotate(360deg) scale(1); }
       }
 
-      h1 { color: #2c3e50; font-size: 24px; margin-bottom: 10px; }
-      .subtitle { color: #e67e22; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 30px; }
-
-      /* Form Styling */
-      .form-group { margin-bottom: 20px; text-align: left; }
-      label { display: block; margin-bottom: 8px; color: #34495e; font-weight: 600; font-size: 13px; }
-      input { width: 100%; padding: 14px; border: 2px solid #eee; border-radius: 12px; font-size: 16px; }
-      
-      .btn {
-        width: 100%; padding: 16px; background: #2c3e50; color: white;
-        border: none; border-radius: 12px; font-size: 16px; font-weight: 700;
-        cursor: pointer; transition: 0.3s;
-      }
-
-      /* Proposal UI */
       .proposal-title { font-size: 26px; color: #2c3e50; margin-bottom: 40px; line-height: 1.4; }
+      
       .button-container { display: flex; gap: 20px; justify-content: center; align-items: center; min-height: 100px; }
 
       .choice-btn { padding: 16px 30px; font-size: 18px; font-weight: 700; border: none; border-radius: 50px; cursor: pointer; transition: 0.3s; position: relative; }
-      .yes-btn { background: #e67e22; color: white; box-shadow: 0 4px 15px rgba(230, 126, 34, 0.4); }
+      .yes-btn { background: #e67e22; color: white; box-shadow: 0 4px 15px rgba(230, 126, 34, 0.4); z-index: 11; }
       .no-btn { background: #ecf0f1; color: #95a5a6; }
 
-      /* The "Talk" bubble for the No button */
+      /* Talking Bubble for No Button */
       .no-btn::after {
         content: attr(data-message);
         position: absolute;
-        top: -40px; left: 50%; transform: translateX(-50%);
-        background: #2c3e50; color: white; padding: 5px 10px;
-        border-radius: 8px; font-size: 12px; white-space: nowrap;
+        top: -50px; left: 50%; transform: translateX(-50%);
+        background: #2c3e50; color: white; padding: 8px 15px;
+        border-radius: 10px; font-size: 13px; white-space: nowrap;
         opacity: 0; transition: 0.3s; pointer-events: none;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
       }
       .no-btn.moving::after { opacity: 1; }
-
       .no-btn.moving { position: fixed; z-index: 1000; }
 
-      /* Success screen */
+      /* Success Screen with Video Scaling */
       .success-message { display: none; animation: zoomIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
       @keyframes zoomIn { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
 
-      .couple-img { width: 100%; max-width: 350px; border-radius: 20px; border: 8px solid white; box-shadow: 0 15px 40px rgba(0,0,0,0.2); margin-bottom: 20px; }
-      
-      /* Cursor Particles */
-      .particle {
-        position: fixed; top: 0; left: 0; width: 8px; height: 8px;
-        background: rgba(255, 253, 187, 0.8); border-radius: 50%;
-        pointer-events: none; z-index: 999; animation: fadeOut 1s forwards;
+      .adventure-video { 
+        width: 100%; 
+        max-width: 350px; 
+        border-radius: 20px; 
+        border: 8px solid white; 
+        box-shadow: 0 15px 40px rgba(0,0,0,0.2); 
+        margin-bottom: 20px; 
+        background: #000;
       }
-      @keyframes fadeOut { to { opacity: 0; transform: translateY(20px) scale(0); } }
+      
+      /* Trail Particles */
+      .particle {
+        position: fixed; width: 10px; height: 10px;
+        background: #fffdbb; border-radius: 50%;
+        pointer-events: none; z-index: 999; animation: fadeOut 0.8s forwards;
+      }
+      @keyframes fadeOut { to { opacity: 0; transform: scale(0); } }
+
+      /* Form Elements */
+      input { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 10px; border: 2px solid #eee; }
+      .gen-btn { width: 100%; padding: 15px; background: #2c3e50; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
     </style>
   </head>
   <body>
 
     <div class="container">
       <div id="generatorSection">
-        <h1>🗺️ Adventure Generator</h1>
-        <p class="subtitle">Your journey starts here</p>
+        <h1 style="color:#2c3e50; margin-bottom:10px;">🗺️ Adventure Generator</h1>
+        <p style="font-size:14px; color:#e67e22; margin-bottom:25px;">Create your journey</p>
         <form id="linkForm">
-          <div class="form-group">
-            <label>Explorer 1 (Your Name)</label>
-            <input type="text" id="fromName" placeholder="Your name" required />
-          </div>
-          <div class="form-group">
-            <label>Explorer 2 (Her Name)</label>
-            <input type="text" id="toName" placeholder="Her name" required />
-          </div>
-          <button type="submit" class="btn">Ready the Map</button>
+          <input type="text" id="fromName" placeholder="Your Name" required>
+          <input type="text" id="toName" placeholder="Her Name" required>
+          <button type="submit" class="gen-btn">Generate Secret Link</button>
         </form>
         <div id="generatedLink" style="display:none; margin-top:20px; padding:15px; background:#fdf2e9; border-radius:10px;">
-          <p style="font-size:12px; color:#e67e22;">Send this secret link to her:</p>
-          <div id="linkDisplay" style="font-size:11px; word-break:break-all; margin:10px 0; background:white; padding:10px; border-radius:5px;"></div>
-          <button class="btn" id="copyBtn" style="padding:10px;">📋 Copy Link</button>
+          <div id="linkDisplay" style="font-size:11px; word-break:break-all; background:white; padding:10px; border-radius:5px; margin-bottom:10px;"></div>
+          <button class="gen-btn" id="copyBtn" style="padding:8px;">📋 Copy Link</button>
         </div>
       </div>
 
       <div id="proposalSection" style="display:none;">
         <div id="proposalContent">
           <div class="icon-container"></div>
-          <h2 class="proposal-title">
-            Hey <span id="toNameDisplay">Love</span>,<br>
-            Ready for the <strong>best adventure</strong> of our lives?
-          </h2>
+          <h2 class="proposal-title">Hey <span id="toNameDisplay">Love</span>,<br>Ready for the <strong>best adventure</strong> of our lives?</h2>
           <div class="button-container">
             <button class="choice-btn yes-btn" id="yesBtn">Yes, Let's Go!</button>
             <button class="choice-btn no-btn" id="noBtn" data-message="Wrong way! 🧭">No</button>
@@ -136,40 +124,43 @@
         </div>
 
         <div class="success-message" id="successMessage">
-          <img src="https://raw.githubusercontent.com/shamalsaleem999-sys/The-forever-Journey/main/couple-illustration.png" class="couple-img" alt="Us">
-          <h2 style="color:#27ae60;">Adventure Awaits! 🥂</h2>
-          <p>Get ready, <span id="fromNameSuccess">Partner</span> is waiting for you!</p>
+          <video id="successVideo" class="adventure-video" loop muted playsinline>
+            <source src="adventure.mp4" type="video/mp4">
+          </video>
+          <h2 style="color:#27ae60; font-size: 30px;">Adventure Awaits! 🥂</h2>
+          <p>Get ready, <span id="fromNameSuccess">Partner</span> is taking you on a trip!</p>
         </div>
       </div>
     </div>
 
     <script>
-      // 1. URL Logic
       const params = new URLSearchParams(window.location.search);
       const from = params.get("from");
       const to = params.get("to");
 
       if (from && to) {
+        // Show Proposal Mode
         document.getElementById("generatorSection").style.display = "none";
         document.getElementById("proposalSection").style.display = "block";
         document.getElementById("toNameDisplay").textContent = decodeURIComponent(to);
         document.getElementById("fromNameSuccess").textContent = decodeURIComponent(from);
-        initInteractions();
+        
+        setupInteractions();
       } else {
-        initGenerator();
+        // Show Generator Mode
+        setupGenerator();
       }
 
-      // 2. Interaction Logic
-      function initInteractions() {
+      function setupInteractions() {
         const noBtn = document.getElementById("noBtn");
         const yesBtn = document.getElementById("yesBtn");
-        const messages = ["Wrong way! 🧭", "Adventure is left! ➡️", "Are you lost? 🗺️", "Nice try! 😂", "Almost! 🏃‍♂️"];
+        const messages = ["Wrong way! 🧭", "Adventure is that way! ➡️", "Are you lost? 🗺️", "Nice try! 😂", "Can't catch me! 🏃‍♂️"];
 
-        // No Button Jumps & Talks
+        // No Button Jumping
         const moveNo = () => {
           noBtn.classList.add("moving");
-          const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 50) + 25;
-          const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 50) + 25;
+          const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 40) + 20;
+          const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 40) + 20;
           noBtn.style.left = `${x}px`;
           noBtn.style.top = `${y}px`;
           noBtn.setAttribute("data-message", messages[Math.floor(Math.random() * messages.length)]);
@@ -178,65 +169,63 @@
         noBtn.addEventListener("mouseenter", moveNo);
         noBtn.addEventListener("touchstart", (e) => { e.preventDefault(); moveNo(); });
 
-        // Yes Button Effects
+        // Yes Button Success
         yesBtn.addEventListener("click", () => {
           document.getElementById("proposalContent").style.display = "none";
           document.getElementById("successMessage").style.display = "block";
-          triggerExplosion();
+          const video = document.getElementById("successVideo");
+          video.play(); // Starts the adventure video
+          triggerConfetti();
         });
 
         // Mouse Trail
         window.addEventListener("mousemove", (e) => {
-          if (Math.random() > 0.9) { // Create particle only sometimes for performance
+          if (Math.random() > 0.8) {
             const p = document.createElement("div");
             p.className = "particle";
             p.style.left = e.clientX + "px";
             p.style.top = e.clientY + "px";
             document.body.appendChild(p);
-            setTimeout(() => p.remove(), 1000);
+            setTimeout(() => p.remove(), 800);
           }
         });
       }
 
-      function triggerExplosion() {
-        const colors = ['#fdbb2d', '#e67e22', '#ffffff', '#2ecc71'];
+      function triggerConfetti() {
+        const colors = ['#fdbb2d', '#e67e22', '#ffffff', '#2ecc71', '#ff6b6b'];
         for(let i=0; i<100; i++) {
-          const conf = document.createElement('div');
-          conf.style.cssText = `
-            position: fixed; left: 50vw; top: 50vh; width: 10px; height: 10px;
-            background: ${colors[Math.floor(Math.random()*colors.length)]};
-            z-index: 1000; border-radius: 2px;
-          `;
-          document.body.appendChild(conf);
+          const c = document.createElement('div');
+          c.style.cssText = `position:fixed; width:8px; height:8px; background:${colors[Math.floor(Math.random()*colors.length)]}; z-index:2000; left:50vw; top:50vh; border-radius:2px;`;
+          document.body.appendChild(c);
           
           const angle = Math.random() * Math.PI * 2;
-          const velocity = Math.random() * 15 + 5;
-          let x = 0, y = 0, gravity = 0.5;
+          const velocity = Math.random() * 12 + 4;
+          let x = 0, y = 0, gravity = 0;
 
           const animate = () => {
             x += Math.cos(angle) * velocity;
             y += Math.sin(angle) * velocity + gravity;
-            gravity += 0.2;
-            conf.style.transform = `translate(${x}px, ${y}px) rotate(${x}deg)`;
+            gravity += 0.4;
+            c.style.transform = `translate(${x}px, ${y}px) rotate(${x}deg)`;
             if (y < window.innerHeight) requestAnimationFrame(animate);
-            else conf.remove();
+            else c.remove();
           };
           requestAnimationFrame(animate);
         }
       }
 
-      function initGenerator() {
+      function setupGenerator() {
         document.getElementById("linkForm").addEventListener("submit", (e) => {
           e.preventDefault();
           const f = document.getElementById("fromName").value;
           const t = document.getElementById("toName").value;
-          const url = `${window.location.origin}${window.location.pathname}?from=${encodeURIComponent(f)}&to=${encodeURIComponent(t)}`;
+          const url = window.location.origin + window.location.pathname + "?from=" + encodeURIComponent(f) + "&to=" + encodeURIComponent(t);
           document.getElementById("linkDisplay").textContent = url;
           document.getElementById("generatedLink").style.display = "block";
         });
         document.getElementById("copyBtn").addEventListener("click", () => {
           navigator.clipboard.writeText(document.getElementById("linkDisplay").textContent);
-          document.getElementById("copyBtn").textContent = "✅ Link Copied!";
+          document.getElementById("copyBtn").textContent = "✅ Copied!";
         });
       }
     </script>
