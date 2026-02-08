@@ -16,7 +16,7 @@
         align-items: center;
         padding: 20px;
         overflow-x: hidden;
-        cursor: crosshair; /* Hinting at the interaction */
+        cursor: crosshair;
       }
 
       .container {
@@ -32,7 +32,6 @@
         z-index: 10;
       }
 
-      /* Animated Compass Star */
       .icon-container {
         position: relative;
         margin: 0 auto 30px;
@@ -56,7 +55,6 @@
       .yes-btn { background: #e67e22; color: white; box-shadow: 0 4px 15px rgba(230, 126, 34, 0.4); z-index: 11; }
       .no-btn { background: #ecf0f1; color: #95a5a6; }
 
-      /* Talking Bubble for No Button */
       .no-btn::after {
         content: attr(data-message);
         position: absolute;
@@ -64,26 +62,22 @@
         background: #2c3e50; color: white; padding: 8px 15px;
         border-radius: 10px; font-size: 13px; white-space: nowrap;
         opacity: 0; transition: 0.3s; pointer-events: none;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
       }
       .no-btn.moving::after { opacity: 1; }
       .no-btn.moving { position: fixed; z-index: 1000; }
 
-      /* Success Screen with Video Scaling */
       .success-message { display: none; animation: zoomIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
       @keyframes zoomIn { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
 
-      .adventure-video { 
+      .adventure-gif { 
         width: 100%; 
         max-width: 350px; 
         border-radius: 20px; 
         border: 8px solid white; 
         box-shadow: 0 15px 40px rgba(0,0,0,0.2); 
         margin-bottom: 20px; 
-        background: #000;
       }
       
-      /* Trail Particles */
       .particle {
         position: fixed; width: 10px; height: 10px;
         background: #fffdbb; border-radius: 50%;
@@ -91,8 +85,7 @@
       }
       @keyframes fadeOut { to { opacity: 0; transform: scale(0); } }
 
-      /* Form Elements */
-      input { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 10px; border: 2px solid #eee; }
+      input { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 10px; border: 2px solid #eee; font-size: 16px; }
       .gen-btn { width: 100%; padding: 15px; background: #2c3e50; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
     </style>
   </head>
@@ -101,13 +94,14 @@
     <div class="container">
       <div id="generatorSection">
         <h1 style="color:#2c3e50; margin-bottom:10px;">🗺️ Adventure Generator</h1>
-        <p style="font-size:14px; color:#e67e22; margin-bottom:25px;">Create your journey</p>
+        <p style="font-size:14px; color:#e67e22; margin-bottom:25px;">Ready to ask the big question?</p>
         <form id="linkForm">
           <input type="text" id="fromName" placeholder="Your Name" required>
           <input type="text" id="toName" placeholder="Her Name" required>
           <button type="submit" class="gen-btn">Generate Secret Link</button>
         </form>
         <div id="generatedLink" style="display:none; margin-top:20px; padding:15px; background:#fdf2e9; border-radius:10px;">
+          <p style="font-size:12px; color:#e67e22; margin-bottom: 5px;">Copy and send this link:</p>
           <div id="linkDisplay" style="font-size:11px; word-break:break-all; background:white; padding:10px; border-radius:5px; margin-bottom:10px;"></div>
           <button class="gen-btn" id="copyBtn" style="padding:8px;">📋 Copy Link</button>
         </div>
@@ -124,11 +118,9 @@
         </div>
 
         <div class="success-message" id="successMessage">
-          <video id="successVideo" class="adventure-video" loop muted playsinline>
-            <source src="adventure.mp4" type="video/mp4">
-          </video>
+          <img src="adventure.mp4.gif" class="adventure-gif" alt="Our Adventure Voyage">
           <h2 style="color:#27ae60; font-size: 30px;">Adventure Awaits! 🥂</h2>
-          <p>Get ready, <span id="fromNameSuccess">Partner</span> is taking you on a trip!</p>
+          <p>Get ready, <span id="fromNameSuccess">Partner</span> is starting the journey!</p>
         </div>
       </div>
     </div>
@@ -139,15 +131,12 @@
       const to = params.get("to");
 
       if (from && to) {
-        // Show Proposal Mode
         document.getElementById("generatorSection").style.display = "none";
         document.getElementById("proposalSection").style.display = "block";
         document.getElementById("toNameDisplay").textContent = decodeURIComponent(to);
         document.getElementById("fromNameSuccess").textContent = decodeURIComponent(from);
-        
         setupInteractions();
       } else {
-        // Show Generator Mode
         setupGenerator();
       }
 
@@ -156,7 +145,6 @@
         const yesBtn = document.getElementById("yesBtn");
         const messages = ["Wrong way! 🧭", "Adventure is that way! ➡️", "Are you lost? 🗺️", "Nice try! 😂", "Can't catch me! 🏃‍♂️"];
 
-        // No Button Jumping
         const moveNo = () => {
           noBtn.classList.add("moving");
           const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 40) + 20;
@@ -169,18 +157,14 @@
         noBtn.addEventListener("mouseenter", moveNo);
         noBtn.addEventListener("touchstart", (e) => { e.preventDefault(); moveNo(); });
 
-        // Yes Button Success
         yesBtn.addEventListener("click", () => {
           document.getElementById("proposalContent").style.display = "none";
           document.getElementById("successMessage").style.display = "block";
-          const video = document.getElementById("successVideo");
-          video.play(); // Starts the adventure video
           triggerConfetti();
         });
 
-        // Mouse Trail
         window.addEventListener("mousemove", (e) => {
-          if (Math.random() > 0.8) {
+          if (Math.random() > 0.85) {
             const p = document.createElement("div");
             p.className = "particle";
             p.style.left = e.clientX + "px";
