@@ -21,7 +21,7 @@
       .container {
         background: rgba(255, 255, 255, 0.95);
         border-radius: 30px;
-        padding: 50px 40px;
+        padding: 40px 30px;
         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         max-width: 500px;
         width: 100%;
@@ -32,205 +32,157 @@
       }
 
       .icon-container {
-        position: relative;
-        margin: 0 auto 30px;
-        width: 100px; height: 100px;
+        margin: 0 auto 20px;
+        width: 80px; height: 80px;
         background: #fdbb2d;
         clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
         animation: rotateStar 15s infinite linear;
       }
 
-      @keyframes rotateStar {
-        from { transform: rotate(0deg) scale(1); }
-        50% { transform: rotate(180deg) scale(1.1); }
-        to { transform: rotate(360deg) scale(1); }
-      }
+      @keyframes rotateStar { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-      .proposal-title { font-size: 26px; color: #2c3e50; margin-bottom: 40px; line-height: 1.4; }
+      .proposal-title { font-size: 24px; color: #2c3e50; margin-bottom: 30px; line-height: 1.4; }
       
-      .button-container { display: flex; gap: 20px; justify-content: center; align-items: center; min-height: 100px; }
+      .button-container { display: flex; gap: 15px; justify-content: center; align-items: center; min-height: 80px; position: relative; }
 
-      .choice-btn { padding: 16px 30px; font-size: 18px; font-weight: 700; border: none; border-radius: 50px; cursor: pointer; transition: 0.3s; position: relative; }
-      .yes-btn { background: #e67e22; color: white; box-shadow: 0 4px 15px rgba(230, 126, 34, 0.4); z-index: 11; }
-      .no-btn { background: #ecf0f1; color: #95a5a6; }
+      .choice-btn { padding: 15px 25px; font-size: 16px; font-weight: 700; border: none; border-radius: 50px; cursor: pointer; transition: 0.3s; }
+      .yes-btn { background: #e67e22; color: white; box-shadow: 0 4px 15px rgba(230, 126, 34, 0.4); }
+      .no-btn { background: #ecf0f1; color: #95a5a6; position: relative; }
 
       .no-btn::after {
         content: attr(data-message);
         position: absolute;
-        top: -50px; left: 50%; transform: translateX(-50%);
-        background: #2c3e50; color: white; padding: 8px 15px;
-        border-radius: 10px; font-size: 13px; white-space: nowrap;
-        opacity: 0; transition: 0.3s; pointer-events: none;
+        top: -40px; left: 50%; transform: translateX(-50%);
+        background: #2c3e50; color: white; padding: 5px 10px;
+        border-radius: 8px; font-size: 12px; white-space: nowrap;
+        opacity: 0; transition: 0.2s; pointer-events: none;
       }
       .no-btn.moving::after { opacity: 1; }
       .no-btn.moving { position: fixed; z-index: 1000; }
 
-      .success-message { display: none; animation: zoomIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-      @keyframes zoomIn { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
+      .success-message { display: none; }
 
-      .adventure-gif { 
-        width: 100%; 
-        max-width: 350px; 
-        border-radius: 20px; 
-        border: 8px solid white; 
-        box-shadow: 0 15px 40px rgba(0,0,0,0.2); 
-        margin-bottom: 20px; 
-      }
+      .adventure-gif { width: 100%; border-radius: 15px; border: 5px solid white; box-shadow: 0 10px 25px rgba(0,0,0,0.1); margin-bottom: 20px; }
       
-      .romantic-text {
-        font-size: 18px;
-        color: #34495e;
-        line-height: 1.6;
-        margin: 20px 0;
-        font-style: italic;
-      }
+      .romantic-text { font-size: 17px; color: #34495e; line-height: 1.5; margin-bottom: 25px; font-style: italic; }
 
       .whatsapp-btn {
-        display: inline-block;
-        background-color: #25D366;
-        color: white;
-        padding: 15px 25px;
-        border-radius: 12px;
-        text-decoration: none;
-        font-weight: bold;
-        font-size: 16px;
-        margin-top: 10px;
-        transition: 0.3s;
-        border: none;
-        cursor: pointer;
-        box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+        display: block; width: 100%; background-color: #25D366; color: white;
+        padding: 15px; border-radius: 12px; text-decoration: none;
+        font-weight: bold; font-size: 16px; transition: 0.3s; border: none; cursor: pointer;
       }
 
-      .whatsapp-btn:hover { background-color: #128C7E; transform: scale(1.05); }
-
-      /* Form styling */
-      input { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 10px; border: 2px solid #eee; }
+      input { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #ddd; font-size: 16px; }
       .gen-btn { width: 100%; padding: 15px; background: #2c3e50; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
     </style>
   </head>
   <body>
 
-    <audio id="successAudio">
+    <audio id="successAudio" preload="auto">
       <source src="success-music.mp3" type="audio/mpeg">
       <source src="https://www.soundjay.com/misc/sounds/magic-chime-01.mp3" type="audio/mpeg">
     </audio>
 
     <div class="container">
       <div id="generatorSection">
-        <h1 style="color:#2c3e50; margin-bottom:10px;">🗺️ Adventure Generator</h1>
-        <form id="linkForm">
-          <input type="text" id="fromName" placeholder="Your Name" required>
-          <input type="text" id="toName" placeholder="Her Name" required>
-          <button type="submit" class="gen-btn">Generate Secret Link</button>
-        </form>
+        <h1 style="margin-bottom:15px;">🗺️ Adventure Link</h1>
+        <input type="text" id="fromName" placeholder="Your Name (e.g. Shamal)">
+        <input type="text" id="toName" placeholder="Her Name">
+        <button type="button" class="gen-btn" onclick="generateLink()">Create Secret Link</button>
+        
         <div id="generatedLink" style="display:none; margin-top:20px; padding:15px; background:#fdf2e9; border-radius:10px;">
           <div id="linkDisplay" style="font-size:11px; word-break:break-all; background:white; padding:10px; border-radius:5px; margin-bottom:10px;"></div>
-          <button class="gen-btn" id="copyBtn" style="padding:8px;">📋 Copy Link</button>
+          <button class="gen-btn" style="padding:8px;" onclick="copyToClipboard()">📋 Copy Link</button>
         </div>
       </div>
 
       <div id="proposalSection" style="display:none;">
         <div id="proposalContent">
           <div class="icon-container"></div>
-          <h2 class="proposal-title">Hey <span id="toNameDisplay">Love</span>,<br>Ready for the <strong>best adventure</strong> of our lives?</h2>
+          <h2 class="proposal-title">Hey <span id="toNameDisplay"></span>,<br>Ready for the <strong>best adventure</strong> of our lives?</h2>
           <div class="button-container">
-            <button class="choice-btn yes-btn" id="yesBtn">Yes, Let's Go!</button>
-            <button class="choice-btn no-btn" id="noBtn" data-message="Wrong way! 🧭">No</button>
+            <button class="choice-btn yes-btn" onclick="handleYes()">Yes, Let's Go!</button>
+            <button class="choice-btn no-btn" id="noBtn" onmouseenter="moveNo()" ontouchstart="moveNo()" data-message="Wrong way! 🧭">No</button>
           </div>
         </div>
 
         <div class="success-message" id="successMessage">
           <img src="adventure.mp4.gif" class="adventure-gif" alt="Our Journey">
-          <h2 style="color:#27ae60; font-size: 28px;">Adventure Awaits! 🥂</h2>
+          <h2 style="color:#27ae60; margin-bottom:10px;">Adventure Awaits! 🥂</h2>
           <p class="romantic-text">
-            "Our greatest adventure begins today. Hand in hand, heart to heart, let’s explore the world together."
+            "Our greatest adventure begins. Hand in hand, heart to heart, let’s explore life & world together."
           </p>
-          <button class="whatsapp-btn" id="whatsappNotify">
-            Confirm on WhatsApp! 📱
-          </button>
+          <button class="whatsapp-btn" onclick="sendWA()">Confirm on WhatsApp! 📱</button>
         </div>
       </div>
     </div>
 
     <script>
-      // CONFIGURATION: REPLACE WITH YOUR PHONE NUMBER
-      const myNumber = "971XXXXXXXXX"; // e.g. "971501234567"
+      // 1. SET YOUR NUMBER HERE
+      const myNumber = "971547984794"; 
 
-      const params = new URLSearchParams(window.location.search);
-      const from = params.get("from");
-      const to = params.get("to");
-
-      if (from && to) {
-        document.getElementById("generatorSection").style.display = "none";
-        document.getElementById("proposalSection").style.display = "block";
-        document.getElementById("toNameDisplay").textContent = decodeURIComponent(to);
-        setupInteractions();
-      } else {
-        setupGenerator();
+      // 2. CHECK FOR LINK PARAMS
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('from') && urlParams.get('to')) {
+        document.getElementById('generatorSection').style.display = 'none';
+        document.getElementById('proposalSection').style.display = 'block';
+        document.getElementById('toNameDisplay').innerText = decodeURIComponent(urlParams.get('to'));
       }
 
-      function setupInteractions() {
-        const noBtn = document.getElementById("noBtn");
-        const yesBtn = document.getElementById("yesBtn");
-        const audio = document.getElementById("successAudio");
-        const messages = ["Wrong way! 🧭", "Adventure is left! ➡️", "Are you lost? 🗺️", "Nice try! 😂"];
+      // 3. GENERATOR LOGIC
+      function generateLink() {
+        const from = document.getElementById('fromName').value;
+        const to = document.getElementById('toName').value;
+        if(!from || !to) { alert("Please fill names"); return; }
+        
+        const finalUrl = window.location.origin + window.location.pathname + "?from=" + encodeURIComponent(from) + "&to=" + encodeURIComponent(to);
+        document.getElementById('linkDisplay').innerText = finalUrl;
+        document.getElementById('generatedLink').style.display = 'block';
+      }
 
-        noBtn.addEventListener("mouseenter", () => {
-          noBtn.classList.add("moving");
-          noBtn.style.left = Math.random() * (window.innerWidth - 100) + "px";
-          noBtn.style.top = Math.random() * (window.innerHeight - 50) + "px";
-          noBtn.setAttribute("data-message", messages[Math.floor(Math.random() * messages.length)]);
-        });
+      function copyToClipboard() {
+        const text = document.getElementById('linkDisplay').innerText;
+        navigator.clipboard.writeText(text);
+        alert("Link Copied!");
+      }
 
-        yesBtn.addEventListener("click", () => {
-          document.getElementById("proposalContent").style.display = "none";
-          document.getElementById("successMessage").style.display = "block";
-          audio.play().catch(e => console.log("Audio blocked"));
-          triggerConfetti();
-        });
+      // 4. PROPOSAL LOGIC
+      function handleYes() {
+        document.getElementById('proposalContent').style.display = 'none';
+        document.getElementById('successMessage').style.display = 'block';
+        document.getElementById('successAudio').play().catch(() => console.log("Audio needs user interaction"));
+        triggerConfetti();
+      }
 
-        document.getElementById("whatsappNotify").addEventListener("click", () => {
-          const text = encodeURIComponent("I said YES! Let our adventure begin! 🗺️❤️");
-          window.open(`https://wa.me/${+971547984794}?text=${It's a Yes}`, '_blank');
-        });
+      function moveNo() {
+        const noBtn = document.getElementById('noBtn');
+        const msgs = ["Wrong way! 🧭", "Adventure is left! ➡️", "Are you lost? 🗺️", "Nice try! 😂"];
+        noBtn.classList.add('moving');
+        noBtn.style.left = Math.random() * (window.innerWidth - 120) + 'px';
+        noBtn.style.top = Math.random() * (window.innerHeight - 60) + 'px';
+        noBtn.setAttribute('data-message', msgs[Math.floor(Math.random()*msgs.length)]);
+      }
+
+      function sendWA() {
+        const msg = encodeURIComponent("I said YES! Let our adventure begin! 🗺️❤️");
+        window.open("https://wa.me/" + myNumber + "?text=" + msg, '_blank');
       }
 
       function triggerConfetti() {
-        const colors = ['#fdbb2d', '#e67e22', '#ffffff', '#2ecc71', '#ff6b6b'];
-        for(let i=0; i<100; i++) {
+        for(let i=0; i<80; i++) {
           const c = document.createElement('div');
-          c.style.cssText = `position:fixed; width:8px; height:8px; background:${colors[Math.floor(Math.random()*colors.length)]}; z-index:2000; left:50vw; top:50vh; border-radius:2px;`;
+          c.style.cssText = "position:fixed;width:8px;height:8px;background:#fdbb2d;z-index:2000;left:50vw;top:50vh;border-radius:2px;";
           document.body.appendChild(c);
-          
-          const angle = Math.random() * Math.PI * 2;
-          const velocity = Math.random() * 12 + 4;
-          let x = 0, y = 0, gravity = 0;
-
-          const animate = () => {
-            x += Math.cos(angle) * velocity;
-            y += Math.sin(angle) * velocity + gravity;
-            gravity += 0.4;
-            c.style.transform = `translate(${x}px, ${y}px) rotate(${x}deg)`;
-            if (y < window.innerHeight) requestAnimationFrame(animate);
-            else c.remove();
+          const angle = Math.random()*Math.PI*2;
+          const velocity = Math.random()*10+5;
+          let x=0, y=0, gravity=0;
+          const anim = () => {
+            x+=Math.cos(angle)*velocity; y+=Math.sin(angle)*velocity+gravity; gravity+=0.3;
+            c.style.transform = `translate(${x}px, ${y}px)`;
+            if(y < window.innerHeight) requestAnimationFrame(anim); else c.remove();
           };
-          requestAnimationFrame(animate);
+          requestAnimationFrame(anim);
         }
-      }
-
-      function setupGenerator() {
-        document.getElementById("linkForm").addEventListener("submit", (e) => {
-          e.preventDefault();
-          const f = document.getElementById("fromName").value;
-          const t = document.getElementById("toName").value;
-          const url = window.location.origin + window.location.pathname + "?from=" + encodeURIComponent(f) + "&to=" + encodeURIComponent(t);
-          document.getElementById("linkDisplay").textContent = url;
-          document.getElementById("generatedLink").style.display = "block";
-        });
-        document.getElementById("copyBtn").addEventListener("click", () => {
-          navigator.clipboard.writeText(document.getElementById("linkDisplay").textContent);
-          document.getElementById("copyBtn").textContent = "✅ Link Copied!";
-        });
       }
     </script>
   </body>
