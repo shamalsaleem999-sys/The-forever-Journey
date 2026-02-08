@@ -74,19 +74,36 @@
         border-radius: 20px; 
         border: 8px solid white; 
         box-shadow: 0 15px 40px rgba(0,0,0,0.2); 
-        margin-bottom: 25px; 
+        margin-bottom: 20px; 
       }
       
       .romantic-text {
         font-size: 18px;
         color: #34495e;
         line-height: 1.6;
-        margin-top: 15px;
+        margin: 20px 0;
         font-style: italic;
-        font-weight: 500;
       }
 
-      /* Form elements */
+      .whatsapp-btn {
+        display: inline-block;
+        background-color: #25D366;
+        color: white;
+        padding: 15px 25px;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 16px;
+        margin-top: 10px;
+        transition: 0.3s;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+      }
+
+      .whatsapp-btn:hover { background-color: #128C7E; transform: scale(1.05); }
+
+      /* Form styling */
       input { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 10px; border: 2px solid #eee; }
       .gen-btn { width: 100%; padding: 15px; background: #2c3e50; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
     </style>
@@ -124,15 +141,21 @@
 
         <div class="success-message" id="successMessage">
           <img src="adventure.mp4.gif" class="adventure-gif" alt="Our Journey">
-          <h2 style="color:#27ae60; font-size: 30px;">Adventure Awaits! 🥂</h2>
+          <h2 style="color:#27ae60; font-size: 28px;">Adventure Awaits! 🥂</h2>
           <p class="romantic-text">
-            Our greatest adventure begins today. Hand in hand, heart to heart, let’s explore the world together.
+            "Our greatest adventure begins today. Hand in hand, heart to heart, let’s explore the world together."
           </p>
+          <button class="whatsapp-btn" id="whatsappNotify">
+            Confirm on WhatsApp! 📱
+          </button>
         </div>
       </div>
     </div>
 
     <script>
+      // CONFIGURATION: REPLACE WITH YOUR PHONE NUMBER
+      const myNumber = "971XXXXXXXXX"; // e.g. "971501234567"
+
       const params = new URLSearchParams(window.location.search);
       const from = params.get("from");
       const to = params.get("to");
@@ -150,28 +173,25 @@
         const noBtn = document.getElementById("noBtn");
         const yesBtn = document.getElementById("yesBtn");
         const audio = document.getElementById("successAudio");
-        const messages = ["Wrong way! 🧭", "Adventure is that way! ➡️", "Are you lost? 🗺️", "Nice try! 😂"];
+        const messages = ["Wrong way! 🧭", "Adventure is left! ➡️", "Are you lost? 🗺️", "Nice try! 😂"];
 
-        const moveNo = () => {
+        noBtn.addEventListener("mouseenter", () => {
           noBtn.classList.add("moving");
-          const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 40) + 20;
-          const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 40) + 20;
-          noBtn.style.left = `${x}px`;
-          noBtn.style.top = `${y}px`;
+          noBtn.style.left = Math.random() * (window.innerWidth - 100) + "px";
+          noBtn.style.top = Math.random() * (window.innerHeight - 50) + "px";
           noBtn.setAttribute("data-message", messages[Math.floor(Math.random() * messages.length)]);
-        };
-
-        noBtn.addEventListener("mouseenter", moveNo);
-        noBtn.addEventListener("touchstart", (e) => { e.preventDefault(); moveNo(); });
+        });
 
         yesBtn.addEventListener("click", () => {
           document.getElementById("proposalContent").style.display = "none";
           document.getElementById("successMessage").style.display = "block";
-          
-          // PLAY HAPPY MUSIC
-          audio.play().catch(e => console.log("Audio play blocked by browser"));
-          
+          audio.play().catch(e => console.log("Audio blocked"));
           triggerConfetti();
+        });
+
+        document.getElementById("whatsappNotify").addEventListener("click", () => {
+          const text = encodeURIComponent("I said YES! Let our adventure begin! 🗺️❤️");
+          window.open(`https://wa.me/${+971547984794}?text=${It's a Yes}`, '_blank');
         });
       }
 
@@ -209,7 +229,7 @@
         });
         document.getElementById("copyBtn").addEventListener("click", () => {
           navigator.clipboard.writeText(document.getElementById("linkDisplay").textContent);
-          document.getElementById("copyBtn").textContent = "✅ Copied!";
+          document.getElementById("copyBtn").textContent = "✅ Link Copied!";
         });
       }
     </script>
