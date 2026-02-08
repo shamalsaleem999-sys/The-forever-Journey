@@ -16,7 +16,6 @@
         align-items: center;
         padding: 20px;
         overflow-x: hidden;
-        cursor: crosshair;
       }
 
       .container {
@@ -76,20 +75,7 @@
         border: 8px solid white; 
         box-shadow: 0 15px 40px rgba(0,0,0,0.2); 
         margin-bottom: 25px; 
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
       }
-      
-      .particle {
-        position: fixed; width: 10px; height: 10px;
-        background: #fffdbb; border-radius: 50%;
-        pointer-events: none; z-index: 999; animation: fadeOut 0.8s forwards;
-      }
-      @keyframes fadeOut { to { opacity: 0; transform: scale(0); } }
-
-      input { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 10px; border: 2px solid #eee; font-size: 16px; }
-      .gen-btn { width: 100%; padding: 15px; background: #2c3e50; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
       
       .romantic-text {
         font-size: 18px;
@@ -97,22 +83,30 @@
         line-height: 1.6;
         margin-top: 15px;
         font-style: italic;
+        font-weight: 500;
       }
+
+      /* Form elements */
+      input { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 10px; border: 2px solid #eee; }
+      .gen-btn { width: 100%; padding: 15px; background: #2c3e50; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
     </style>
   </head>
   <body>
 
+    <audio id="successAudio">
+      <source src="success-music.mp3" type="audio/mpeg">
+      <source src="https://www.soundjay.com/misc/sounds/magic-chime-01.mp3" type="audio/mpeg">
+    </audio>
+
     <div class="container">
       <div id="generatorSection">
         <h1 style="color:#2c3e50; margin-bottom:10px;">🗺️ Adventure Generator</h1>
-        <p style="font-size:14px; color:#e67e22; margin-bottom:25px;">Ready to ask the big question?</p>
         <form id="linkForm">
           <input type="text" id="fromName" placeholder="Your Name" required>
           <input type="text" id="toName" placeholder="Her Name" required>
           <button type="submit" class="gen-btn">Generate Secret Link</button>
         </form>
         <div id="generatedLink" style="display:none; margin-top:20px; padding:15px; background:#fdf2e9; border-radius:10px;">
-          <p style="font-size:12px; color:#e67e22; margin-bottom: 5px;">Copy and send this link:</p>
           <div id="linkDisplay" style="font-size:11px; word-break:break-all; background:white; padding:10px; border-radius:5px; margin-bottom:10px;"></div>
           <button class="gen-btn" id="copyBtn" style="padding:8px;">📋 Copy Link</button>
         </div>
@@ -155,7 +149,8 @@
       function setupInteractions() {
         const noBtn = document.getElementById("noBtn");
         const yesBtn = document.getElementById("yesBtn");
-        const messages = ["Wrong way! 🧭", "Adventure is that way! ➡️", "Are you lost? 🗺️", "Nice try! 😂", "Can't catch me! 🏃‍♂️"];
+        const audio = document.getElementById("successAudio");
+        const messages = ["Wrong way! 🧭", "Adventure is that way! ➡️", "Are you lost? 🗺️", "Nice try! 😂"];
 
         const moveNo = () => {
           noBtn.classList.add("moving");
@@ -172,18 +167,11 @@
         yesBtn.addEventListener("click", () => {
           document.getElementById("proposalContent").style.display = "none";
           document.getElementById("successMessage").style.display = "block";
+          
+          // PLAY HAPPY MUSIC
+          audio.play().catch(e => console.log("Audio play blocked by browser"));
+          
           triggerConfetti();
-        });
-
-        window.addEventListener("mousemove", (e) => {
-          if (Math.random() > 0.85) {
-            const p = document.createElement("div");
-            p.className = "particle";
-            p.style.left = e.clientX + "px";
-            p.style.top = e.clientY + "px";
-            document.body.appendChild(p);
-            setTimeout(() => p.remove(), 800);
-          }
         });
       }
 
@@ -191,4 +179,39 @@
         const colors = ['#fdbb2d', '#e67e22', '#ffffff', '#2ecc71', '#ff6b6b'];
         for(let i=0; i<100; i++) {
           const c = document.createElement('div');
-          c.style.cssText = `position:
+          c.style.cssText = `position:fixed; width:8px; height:8px; background:${colors[Math.floor(Math.random()*colors.length)]}; z-index:2000; left:50vw; top:50vh; border-radius:2px;`;
+          document.body.appendChild(c);
+          
+          const angle = Math.random() * Math.PI * 2;
+          const velocity = Math.random() * 12 + 4;
+          let x = 0, y = 0, gravity = 0;
+
+          const animate = () => {
+            x += Math.cos(angle) * velocity;
+            y += Math.sin(angle) * velocity + gravity;
+            gravity += 0.4;
+            c.style.transform = `translate(${x}px, ${y}px) rotate(${x}deg)`;
+            if (y < window.innerHeight) requestAnimationFrame(animate);
+            else c.remove();
+          };
+          requestAnimationFrame(animate);
+        }
+      }
+
+      function setupGenerator() {
+        document.getElementById("linkForm").addEventListener("submit", (e) => {
+          e.preventDefault();
+          const f = document.getElementById("fromName").value;
+          const t = document.getElementById("toName").value;
+          const url = window.location.origin + window.location.pathname + "?from=" + encodeURIComponent(f) + "&to=" + encodeURIComponent(t);
+          document.getElementById("linkDisplay").textContent = url;
+          document.getElementById("generatedLink").style.display = "block";
+        });
+        document.getElementById("copyBtn").addEventListener("click", () => {
+          navigator.clipboard.writeText(document.getElementById("linkDisplay").textContent);
+          document.getElementById("copyBtn").textContent = "✅ Copied!";
+        });
+      }
+    </script>
+  </body>
+</html>
