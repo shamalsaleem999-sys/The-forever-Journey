@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Our Next Adventure</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Georgia", serif;
+        background: linear-gradient(
+          135deg,
+          #1a2a6c 0%,
+          #b21f1f 50%,
+          #fdbb2d 100%
+        );
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        overflow-x: hidden;
+      }
+
+      .container {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 30px;
+        padding: 50px 40px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        max-width: 500px;
+        width: 100%;
+        text-align: center;
+        backdrop-filter: blur(5px);
+      }
+
+      /* Adventure Icon: Pulsing Star */
+      .icon-container {
+        position: relative;
+        margin: 0 auto 30px;
+        width: 100px;
+        height: 100px;
+        background: #fdbb2d;
+        clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0% { transform: scale(1); filter: drop-shadow(0 0 5px #fdbb2d); }
+        50% { transform: scale(1.1); filter: drop-shadow(0 0 20px #fdbb2d); }
+        100% { transform: scale(1); filter: drop-shadow(0 0 5px #fdbb2d); }
+      }
+
+      h1 {
+        color: #2c3e50;
+        margin-bottom: 10px;
+        font-size: 24px;
+      }
+
+      .subtitle {
+        color: #e67e22;
+        margin-bottom: 30px;
+        font-size: 14px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+        text-align: left;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        color: #34495e;
+        font-weight: 600;
+        font-size: 13px;
+      }
+
+      input {
+        width: 100%;
+        padding: 14px;
+        border: 2px solid #eee;
+        border-radius: 12px;
+        font-size: 16px;
+        transition: 0.3s;
+      }
+
+      input:focus {
+        outline: none;
+        border-color: #fdbb2d;
+      }
+
+      .btn {
+        width: 100%;
+        padding: 16px;
+        background: #2c3e50;
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .btn:hover {
+        background: #1a252f;
+        transform: translateY(-2px);
+      }
+
+      .generated-link {
+        display: none;
+        margin-top: 30px;
+        padding: 20px;
+        background: #fdf2e9;
+        border-radius: 15px;
+      }
+
+      .link-container {
+        background: white;
+        padding: 12px;
+        border-radius: 8px;
+        word-break: break-all;
+        margin: 10px 0;
+        font-size: 12px;
+        border: 1px solid #ddd;
+      }
+
+      .proposal-title {
+        font-size: 26px;
+        color: #2c3e50;
+        margin-bottom: 40px;
+        line-height: 1.4;
+      }
+
+      .button-container {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        align-items: center;
+        min-height: 80px;
+      }
+
+      .choice-btn {
+        padding: 16px 30px;
+        font-size: 18px;
+        font-weight: 700;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .yes-btn {
+        background: #e67e22;
+        color: white;
+      }
+
+      .no-btn {
+        background: #ecf0f1;
+        color: #95a5a6;
+      }
+
+      .no-btn.moving {
+        position: fixed;
+        z-index: 1000;
+      }
+
+      .success-message {
+        display: none;
+        animation: fadeIn 1s ease-in;
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      .couple-img {
+        width: 100%;
+        max-width: 350px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        margin-bottom: 25px;
+        border: 5px solid white;
+      }
+
+      .success-text {
+        font-size: 32px;
+        color: #27ae60;
+        margin-bottom: 10px;
+      }
+
+      .confetti {
+        position: fixed;
+        width: 10px;
+        height: 10px;
+        top: -10px;
+        animation: fall 3s linear forwards;
+        z-index: 9999;
+      }
+
+      @keyframes fall {
+        to { transform: translateY(100vh) rotate(360deg); }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div id="generatorSection">
+        <h1>🗺️ Adventure Generator</h1>
+        <p class="subtitle">Set the stage for your journey</p>
+        <form id="linkForm">
+          <div class="form-group">
+            <label>Your Name</label>
+            <input type="text" id="fromName" placeholder="Enter your name" required />
+          </div>
+          <div class="form-group">
+            <label>Their Name</label>
+            <input type="text" id="toName" placeholder="Enter their name" required />
+          </div>
+          <button type="submit" class="btn">Generate Adventure Link</button>
+        </form>
+        <div class="generated-link" id="generatedLink">
+          <h3 style="color: #e67e22">🌍 Map Ready!</h3>
+          <div class="link-container" id="linkDisplay"></div>
+          <button class="btn" id="copyBtn">📋 Copy Link</button>
+        </div>
+      </div>
+
+      <div id="proposalSection" style="display:none;">
+        <div id="proposalContent">
+          <div class="icon-container"></div>
+          <h2 class="proposal-title">
+            Hey <span id="toNameDisplay">Love</span>,<br>
+            Ready for the <strong>best adventure</strong> of our lives?
+          </h2>
+          <div class="button-container">
+            <button class="choice-btn yes-btn" id="yesBtn">Yes, Let's Go!</button>
+            <button class="choice-btn no-btn" id="noBtn">Not yet</button>
+          </div>
+        </div>
+
+        <div class="success-message" id="successMessage">
+          <img src="https://files.oaiusercontent.com/file-DAnXo316S2gLsk3E7YFk5o?se=2025-02-08T06%3A08%3A10Z&sp=r&sv=2024-08-04&sr=b&rscc=max-age%3D604800%2C%20immutable%2C%20private&rscd=attachment%3B%20filename%3D06a37e8c-8438-4061-9c3a-2319207865c6.webp&sig=G9tYgW3DovwY7mKx8T1Ue6K/I7uT4vS/f5K3K8sM3uM%3D" class="couple-img" alt="Adventure Together">
+          <h2 class="success-text">Adventure Awaits! 🥂</h2>
+          <p>Get ready, <span id="fromNameSuccess">Partner</span> is ready to start the journey!</p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const from = params.get("from");
+      const to = params.get("to");
+
+      if (from && to) {
+        document.getElementById("generatorSection").style.display = "none";
+        document.getElementById("proposalSection").style.display = "block";
+        document.getElementById("toNameDisplay").textContent = decodeURIComponent(to);
+        document.getElementById("fromNameSuccess").textContent = decodeURIComponent(from);
+        
+        setupProposalLogic();
+      } else {
+        setupGeneratorLogic();
+      }
+
+      function setupGeneratorLogic() {
+        document.getElementById("linkForm").addEventListener("submit", (e) => {
+          e.preventDefault();
+          const f = document.getElementById("fromName").value;
+          const t = document.getElementById("toName").value;
+          const url = `${window.location.origin}${window.location.pathname}?from=${encodeURIComponent(f)}&to=${encodeURIComponent(t)}`;
+          document.getElementById("linkDisplay").textContent = url;
+          document.getElementById("generatedLink").style.display = "block";
+        });
+
+        document.getElementById("copyBtn").addEventListener("click", () => {
+          navigator.clipboard.writeText(document.getElementById("linkDisplay").textContent);
+          document.getElementById("copyBtn").textContent = "✅ Link Copied!";
+        });
+      }
+
+      function setupProposalLogic() {
+        const noBtn = document.getElementById("noBtn");
+        const yesBtn = document.getElementById("yesBtn");
+
+        const moveNo = () => {
+          noBtn.classList.add("moving");
+          const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 40) + 20;
+          const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 40) + 20;
+          noBtn.style.left = `${x}px`;
+          noBtn.style.top = `${y}px`;
+        };
+
+        noBtn.addEventListener("mouseenter", moveNo);
+        noBtn.addEventListener("touchstart", (e) => { e.preventDefault(); moveNo(); });
+
+        yesBtn.addEventListener("click", () => {
+          document.getElementById("proposalContent").style.display = "none";
+          document.getElementById("successMessage").style.display = "block";
+          for(let i=0; i<80; i++) createConfetti();
+        });
+      }
+
+      function createConfetti() {
+        const colors = ['#fdbb2d', '#e67e22', '#2ecc71', '#ffffff', '#ff6b6b'];
+        const c = document.createElement('div');
+        c.className = 'confetti';
+        c.style.left = Math.random() * 100 + 'vw';
+        c.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        c.style.animationDuration = (Math.random() * 2 + 2) + 's';
+        c.style.opacity = Math.random();
+        document.body.appendChild(c);
+      }
+    </script>
+  </body>
+</html>
