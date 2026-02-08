@@ -6,7 +6,6 @@
     <title>Our Next Adventure</title>
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
-
       body {
         font-family: "Georgia", serif;
         background: linear-gradient(135deg, #1a2a6c 0%, #b21f1f 50%, #fdbb2d 100%);
@@ -17,7 +16,6 @@
         padding: 20px;
         overflow-x: hidden;
       }
-
       .container {
         background: rgba(255, 255, 255, 0.95);
         border-radius: 30px;
@@ -30,7 +28,6 @@
         position: relative;
         z-index: 10;
       }
-
       .icon-container {
         margin: 0 auto 20px;
         width: 80px; height: 80px;
@@ -38,61 +35,42 @@
         clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
         animation: rotateStar 15s infinite linear;
       }
-
       @keyframes rotateStar { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
       .proposal-title { font-size: 24px; color: #2c3e50; margin-bottom: 30px; line-height: 1.4; }
-      
       .button-container { display: flex; gap: 15px; justify-content: center; align-items: center; min-height: 80px; position: relative; }
-
-      .choice-btn { padding: 15px 25px; font-size: 16px; font-weight: 700; border: none; border-radius: 50px; cursor: pointer; transition: 0.3s; }
+      .choice-btn { padding: 15px 30px; font-size: 18px; font-weight: 700; border: none; border-radius: 50px; cursor: pointer; transition: 0.3s; }
       .yes-btn { background: #e67e22; color: white; box-shadow: 0 4px 15px rgba(230, 126, 34, 0.4); }
       .no-btn { background: #ecf0f1; color: #95a5a6; position: relative; }
-
-      .no-btn::after {
-        content: attr(data-message);
-        position: absolute;
-        top: -40px; left: 50%; transform: translateX(-50%);
-        background: #2c3e50; color: white; padding: 5px 10px;
-        border-radius: 8px; font-size: 12px; white-space: nowrap;
-        opacity: 0; transition: 0.2s; pointer-events: none;
-      }
-      .no-btn.moving::after { opacity: 1; }
       .no-btn.moving { position: fixed; z-index: 1000; }
-
-      .success-message { display: none; }
-
-      .adventure-gif { width: 100%; border-radius: 15px; border: 5px solid white; box-shadow: 0 10px 25px rgba(0,0,0,0.1); margin-bottom: 20px; }
       
-      .romantic-text { font-size: 17px; color: #34495e; line-height: 1.5; margin-bottom: 25px; font-style: italic; }
-
-      .whatsapp-btn {
-        display: block; width: 100%; background-color: #25D366; color: white;
-        padding: 15px; border-radius: 12px; text-decoration: none;
-        font-weight: bold; font-size: 16px; transition: 0.3s; border: none; cursor: pointer;
-      }
-
-      input { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #ddd; font-size: 16px; }
+      .success-message { display: none; animation: fadeIn 0.8s ease; }
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+      
+      .adventure-gif { width: 100%; border-radius: 15px; border: 5px solid white; margin-bottom: 20px; }
+      .whatsapp-btn { display: block; width: 100%; background-color: #25D366; color: white; padding: 15px; border-radius: 12px; text-decoration: none; font-weight: bold; font-size: 16px; border: none; cursor: pointer; margin-top: 15px; }
+      
+      .user-input { width: 100%; padding: 15px; margin-bottom: 10px; border-radius: 12px; border: 2px solid #27ae60; font-size: 16px; outline: none; background: white; text-align: center; }
+      .gen-input { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #ddd; }
       .gen-btn { width: 100%; padding: 15px; background: #2c3e50; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
+      .mahr-section { margin-top: 25px; padding-top: 20px; border-top: 1px dashed #ccc; }
     </style>
   </head>
   <body>
 
-    <audio id="successAudio" preload="auto">
+    <audio id="successAudio">
       <source src="success-music.mp3" type="audio/mpeg">
       <source src="https://www.soundjay.com/misc/sounds/magic-chime-01.mp3" type="audio/mpeg">
     </audio>
 
     <div class="container">
       <div id="generatorSection">
-        <h1 style="margin-bottom:15px;">🗺️ Adventure Link</h1>
-        <input type="text" id="fromName" placeholder="Your Name (e.g. Shamal)">
-        <input type="text" id="toName" placeholder="Her Name">
-        <button type="button" class="gen-btn" onclick="generateLink()">Create Secret Link</button>
-        
+        <h1 style="margin-bottom:15px;">🗺️ Journey Creator</h1>
+        <input type="text" id="fromName" class="gen-input" placeholder="Your Name">
+        <input type="text" id="toName" class="gen-input" placeholder="Her Name">
+        <button type="button" class="gen-btn" onclick="generateLink()">Create Link</button>
         <div id="generatedLink" style="display:none; margin-top:20px; padding:15px; background:#fdf2e9; border-radius:10px;">
           <div id="linkDisplay" style="font-size:11px; word-break:break-all; background:white; padding:10px; border-radius:5px; margin-bottom:10px;"></div>
-          <button class="gen-btn" style="padding:8px;" onclick="copyToClipboard()">📋 Copy Link</button>
+          <button class="gen-btn" onclick="copyToClipboard()">📋 Copy Link</button>
         </div>
       </div>
 
@@ -102,26 +80,27 @@
           <h2 class="proposal-title">Hey <span id="toNameDisplay"></span>,<br>Ready for the <strong>best adventure</strong> of our lives?</h2>
           <div class="button-container">
             <button class="choice-btn yes-btn" onclick="handleYes()">Yes, Let's Go!</button>
-            <button class="choice-btn no-btn" id="noBtn" onmouseenter="moveNo()" ontouchstart="moveNo()" data-message="Wrong way! 🧭">No</button>
+            <button class="choice-btn no-btn" id="noBtn" onmouseenter="moveNo()" ontouchstart="moveNo()">No</button>
           </div>
         </div>
 
         <div class="success-message" id="successMessage">
           <img src="adventure.mp4.gif" class="adventure-gif" alt="Our Journey">
           <h2 style="color:#27ae60; margin-bottom:10px;">Adventure Awaits! 🥂</h2>
-          <p class="romantic-text">
-            "Our greatest adventure begins. Hand in hand, heart to heart, let’s explore life & world together."
-          </p>
-          <button class="whatsapp-btn" onclick="sendWA()">Confirm on WhatsApp! 📱</button>
+          
+          <div class="mahr-section">
+            <p style="color: #2c3e50; font-style: italic; margin-bottom: 10px;">ooh the most important question...</p>
+            <h3 style="font-size: 18px; margin-bottom: 15px;">What's your demanded Mahr?</h3>
+            <input type="text" id="mahrDemand" class="user-input" placeholder="Enter your Mahr demand...">
+            <button class="whatsapp-btn" onclick="sendWA()">Confirm on WhatsApp! 📱</button>
+          </div>
         </div>
       </div>
     </div>
 
     <script>
-      // 1. SET YOUR NUMBER HERE
-      const myNumber = "971547984794"; 
+      const myNumber = "971547984794"; // <-- REPLACE WITH YOUR PHONE NUMBER
 
-      // 2. CHECK FOR LINK PARAMS
       const urlParams = new URLSearchParams(window.location.search);
       if (urlParams.get('from') && urlParams.get('to')) {
         document.getElementById('generatorSection').style.display = 'none';
@@ -129,42 +108,37 @@
         document.getElementById('toNameDisplay').innerText = decodeURIComponent(urlParams.get('to'));
       }
 
-      // 3. GENERATOR LOGIC
       function generateLink() {
         const from = document.getElementById('fromName').value;
         const to = document.getElementById('toName').value;
-        if(!from || !to) { alert("Please fill names"); return; }
-        
+        if(!from || !to) { alert("Enter both names!"); return; }
         const finalUrl = window.location.origin + window.location.pathname + "?from=" + encodeURIComponent(from) + "&to=" + encodeURIComponent(to);
         document.getElementById('linkDisplay').innerText = finalUrl;
         document.getElementById('generatedLink').style.display = 'block';
       }
 
       function copyToClipboard() {
-        const text = document.getElementById('linkDisplay').innerText;
-        navigator.clipboard.writeText(text);
+        navigator.clipboard.writeText(document.getElementById('linkDisplay').innerText);
         alert("Link Copied!");
       }
 
-      // 4. PROPOSAL LOGIC
       function handleYes() {
         document.getElementById('proposalContent').style.display = 'none';
         document.getElementById('successMessage').style.display = 'block';
-        document.getElementById('successAudio').play().catch(() => console.log("Audio needs user interaction"));
+        document.getElementById('successAudio').play().catch(() => {});
         triggerConfetti();
       }
 
       function moveNo() {
         const noBtn = document.getElementById('noBtn');
-        const msgs = ["Wrong way! 🧭", "Adventure is left! ➡️", "Are you lost? 🗺️", "Nice try! 😂"];
         noBtn.classList.add('moving');
         noBtn.style.left = Math.random() * (window.innerWidth - 120) + 'px';
         noBtn.style.top = Math.random() * (window.innerHeight - 60) + 'px';
-        noBtn.setAttribute('data-message', msgs[Math.floor(Math.random()*msgs.length)]);
       }
 
       function sendWA() {
-        const msg = encodeURIComponent("I said YES! Let our adventure begin! 🗺️❤️");
+        const mahr = document.getElementById('mahrDemand').value || "To be discussed ❤️";
+        const msg = encodeURIComponent(`I said YES to your proposal! For my Mahr, I'm thinking: "${mahr}" 🗺️💍`);
         window.open("https://wa.me/" + myNumber + "?text=" + msg, '_blank');
       }
 
